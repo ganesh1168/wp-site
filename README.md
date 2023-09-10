@@ -128,18 +128,35 @@ Before you begin, ensure you have the following prerequisites in place:
 1. Create a `.github/workflows/main.yml` file in your GitHub repository with the following content (adjust as needed):
 
 ```yaml
-- name: Install SSH key
+name: Deploy to Remote Server
+on:
+  push:
+    branches:
+      - main # Change this to the branch you want to trigger deployments from
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # You can choose a different runner if needed
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install SSH key
       run: |
         mkdir -p ~/.ssh
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -t rsa ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+        ssh-keyscan -t rsa {{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }} # Store your SSH private key as a GitHub secret
 
     - name: SSH into the remote server and deploy
       run: |
-        ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.DEPLOY_PATH }} &&  sudo git pull origin main"
+        ssh -i ~/.ssh/id_rsa {{ secrets.SSH_USER }}@{{ secrets.SSH_HOST }} "cd /var/www/wp-site &&  sudo git pull origin main"
+ # Modify this command to suit your deployment needs
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 ```
 
 2. Generate an SSH key pair on your local machine if you haven't already:
