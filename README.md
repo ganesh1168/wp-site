@@ -147,13 +147,13 @@ jobs:
         mkdir -p ~/.ssh
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -t rsa {{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+        ssh-keyscan -t rsa ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }} # Store your SSH private key as a GitHub secret
 
     - name: SSH into the remote server and deploy
       run: |
-        ssh -i ~/.ssh/id_rsa {{ secrets.SSH_USER }}@{{ secrets.SSH_HOST }} "cd /var/www/wp-site &&  sudo git pull origin main"
+        ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@ ${{ secrets.SSH_HOST }} "cd ${{ secrets.DEPLOY_PATH }} &&  sudo git pull origin main"
  # Modify this command to suit your deployment needs
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
