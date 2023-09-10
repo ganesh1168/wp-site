@@ -1,28 +1,26 @@
-name: Deploy WordPress
-
+name: Deploy to Remote Server
 on:
   push:
     branches:
-      - main
+      - main # Change this to the branch you want to trigger deployments from
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # You can choose a different runner if needed
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.4
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Install SSH key
+      run: |
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }} # Store your SSH private key as a GitHub secret
 
-      - name: Deploy to Server
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.DEPLOY_PATH }} && git pull origin main"
-        env:
-          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
+    - name: SSH into the remote server and deploy
+      run: |
+        ssh -i ~/.ssh/id_rsa ubuntu@3.87.106.115 "cd /var/www/wp-site && git pull origin main" # Modify this command to suit your deployment needs
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
