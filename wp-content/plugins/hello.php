@@ -27,7 +27,7 @@ One of our old favorite songs from way back when
 So, take her wrap, fellas
 Dolly, never go away again
 Hello, Dolly
-Well, hello, Dolly
+Well, hello, Doly
 It's so nice to have you back where you belong
 You're lookin' swell, Dolly
 I can tell, Dolly
