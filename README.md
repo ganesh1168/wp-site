@@ -42,9 +42,9 @@ Before you begin, ensure you have the following prerequisites in place:
 
    ```shell
    mysql -u root -p
-   CREATE DATABASE wordpress;
-   CREATE USER 'wordpressuser'@'localhost' IDENTIFIED BY 'your_password';
-   GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpressuser'@'localhost';
+   CREATE DATABASE wp_db;
+   CREATE USER 'wp_user'@'localhost' IDENTIFIED BY 'your_password';
+   GRANT ALL PRIVILEGES ON wp_db.* TO 'wp_user'@'localhost';
    FLUSH PRIVILEGES;
    EXIT;
    ```
