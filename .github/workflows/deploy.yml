@@ -23,6 +23,7 @@ jobs:
 
     - name: SSH into the remote server and deploy
       run: |
-        ssh -i ~/.ssh/id_rsa ubuntu@3.87.106.115 "cd /var/www/wp-site && git pull origin main" # Modify this command to suit your deployment needs
+        ssh -i ~/.ssh/id_rsa ubuntu@3.87.106.115 "cd /var/www/wp-site && git config --global --add core.safedir /var/www/wp-site && git pull origin main"
+ # Modify this command to suit your deployment needs
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
